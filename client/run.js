@@ -3,7 +3,7 @@ var request=require('request');
 var externalip=require('externalip');
 
 var baseUrl = 'http://ctrekker.mjtrekkers.com/utilities/DynamicIpTracker/';
-var computerName = 'RASPI_1';
+var computerName = 'NONE';
 
 externalip(function(err, ip) {
     if(err) throw err;
