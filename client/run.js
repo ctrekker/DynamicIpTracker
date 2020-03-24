@@ -2,21 +2,7 @@ var fs=require('fs');
 var request=require('request');
 var publicIp=require('public-ip');
 
-const Discord = require('discord.js');
-const client = new Discord.Client();
-
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-    client.channels.fetch('690700442866286612').then(channel => {
-        console.log('Fetched '+channel.name)
-
-        performIpCheck(channel);
-    }).catch(console.error);
-});
-
-client.login('NjkyMDIwOTI3NjA4NzgyODU4.XnodNA.rQfukWGTF1KDI8BwYKC_YPV77oo');
-
-function performIpCheck(announceChannel) {
+function performIpCheck() {
     var baseUrl = 'http://ctrekker.mjtrekkers.com/utilities/DynamicIpTracker/';
     var computerName = 'NONE';
 
@@ -24,7 +10,6 @@ function performIpCheck(announceChannel) {
         try {
             if(fs.readFileSync('ip.txt').toString()!==ip) {
                 fs.appendFileSync('changes.txt', getTimeStamp()+' -> '+ip + '\n');
-                announceChannel.send('The server IP has changed to ' + ip);
             }
         } catch(err) {};
 
@@ -36,7 +21,6 @@ function performIpCheck(announceChannel) {
             function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     fs.writeFileSync('last_success.txt', getTimeStamp());
-                    client.destroy();
                 }
             }
         );
@@ -44,6 +28,8 @@ function performIpCheck(announceChannel) {
         console.log(err);
     });
 }
+
+performIpCheck();
 
 function getTimeStamp() {
     var now = new Date();
